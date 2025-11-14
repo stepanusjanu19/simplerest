@@ -4,7 +4,7 @@
 
 (defpackage :my-rest-server
   (:use :cl :hunchentoot :cl-json)
-  (:export :start-server :stop-server))
+  (:export :start-server :stop-server :*port*));; Export *port*
 (in-package :my-rest-server)
 
 (defparameter *port* 7000)
@@ -74,4 +74,3 @@
     (stop *server*)
     (setf *server* nil)
     (format t "~%🛑 Server stopped.~%")))
-

@@ -15,18 +15,18 @@ COPY . /app
 
 # Ensure Quicklisp is installed if missing
 RUN if [ ! -d "/app/quicklisp" ]; then \
-      echo "Installing Quicklisp..."; \
-      curl -O https://beta.quicklisp.org/quicklisp.lisp && \
-      sbcl --load quicklisp.lisp \
-           --eval '(quicklisp-quickstart:install)' \
-           --eval '(ql:add-to-init-file)' \
-           --quit; \
+    echo "Installing Quicklisp..."; \
+    curl -O https://beta.quicklisp.org/quicklisp.lisp && \
+    sbcl --load quicklisp.lisp \
+    --eval '(quicklisp-quickstart:install)' \
+    --eval '(ql:add-to-init-file)' \
+    --quit; \
     fi
 
 # Build the Lisp executable
 RUN sbcl --non-interactive \
-         --load "/app/run.lisp" \
-         --eval "(save-lisp-and-die \"app\" :executable t :toplevel #'common-lisp-user::main)"
+    --load "/app/run.lisp" \
+    --eval "(save-lisp-and-die \"app\" :executable t :toplevel #'my-rest-server::main)"
 
 # ==============================================
 # Stage 2 — Runtime image
@@ -42,4 +42,3 @@ COPY --from=builder /app/app /app/app
 
 EXPOSE 7000
 CMD ["/app/app"]
-
